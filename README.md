@@ -56,3 +56,9 @@ git push origin main
 ### Command to run on local
 
 `uvicorn main:app --reload`
+
+## Vercel deployment
+
+The same configuration with no changes at all also worked in vercel, the project for the time being is deployed here
+
+https://fastapionrender.vercel.app
