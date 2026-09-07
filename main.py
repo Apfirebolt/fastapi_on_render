@@ -1,6 +1,10 @@
 from typing import List
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
+
+templates = Jinja2Templates(directory="templates")
 
 app = FastAPI(
     title="Item Catalog API",
@@ -26,9 +30,13 @@ ITEMS: List[Item] = [
 ]
 
 
-@app.get("/", tags=["Health"])
-def health_check():
-    return {"status": "ok", "message": "FastAPI service is running"}
+@app.get("/", response_class=HTMLResponse, tags=["Web UI"])
+def home(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html",
+        context={"title": "Item Catalog", "items": ITEMS},
+    )
 
 
 @app.get("/items", response_model=List[Item], tags=["Items"])
